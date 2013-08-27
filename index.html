@@ -307,7 +307,7 @@ $range.bind('change', function (e, nohistory) {
 });
 
 if (window.top !== window.self) window.top.location.replace(window.self.location.href);
-
+var _initPopstate;
 if (history.pushState) {
   window.onpopstate = function () {
     // read the location and reload
@@ -336,9 +336,16 @@ if (history.pushState) {
     } else {
       $range.trigger('change', [ true ]);
     }
+    _initPopstate = true;
   };
 }
-
+window.onload = function() {
+    window.setTimeout(function() {
+        if (!_initPopstate) {
+            window.onpopstate();
+        }
+    }, 1);
+};
 var _gaq = [['_setAccount', 'UA-1656750-27'], ['_trackPageview']];
 (function(d, t) {
   var g = d.createElement(t),
